@@ -24,5 +24,5 @@ public class Post {
     @Nullable
     private String postText;
 
-    
+
 }
