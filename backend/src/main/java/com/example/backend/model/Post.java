@@ -5,9 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+
+import java.time.Instant;
+
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @AllArgsConstructor
@@ -16,6 +20,7 @@ import javax.validation.constraints.NotBlank;
 public class Post {
 
     @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Long postId;
 
     @NotBlank(message = "Post can not be with out name")
@@ -24,5 +29,18 @@ public class Post {
     @Nullable
     private String postText;
 
+    private Integer voteCount;
 
+    @Nullable
+    private String description;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "postId", referencedColumnName = "userId")
+    private User user;
+
+    private Instant createdDate;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "postId", referencedColumnName = "subredditId")
+    private Subreddit subreddit;
 }
